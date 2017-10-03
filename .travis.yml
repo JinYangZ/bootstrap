@@ -4,8 +4,8 @@ language: node_js
 git:
   depth: 3
 node_js:
-  - "6"
   - "8"
+  - "6"
 before_install:
   - if [[ `npm -v` != 5* ]]; then npm install -g npm@5; fi
 install:
@@ -19,6 +19,12 @@ stages:
     if: type = push
 jobs:
   include:
+    - stage: test
+      node_js: 8
+      script: npm run css-lint && npm run css-lint-docs && npm run js-lint
+    -
+      node_js: 8
+      script: npm test
     - stage: browser
       node_js: 8
       script: if ! git log --format=%B --no-merges -n 1 | grep '\[skip browser\]'; then npm test && npm run js-test-cloud; fi
